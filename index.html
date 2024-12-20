@@ -15,60 +15,109 @@
         h1 {
             color: #333;
         }
-        .container {
+        .animal-container {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            gap: 20px;
-            padding: 20px;
+            height: 80vh;
         }
         .animal {
-            border: 2px solid #ddd;
+            position: relative;
+            width: 200px;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
             border-radius: 10px;
-            padding: 10px;
-            width: 120px;
-            background-color: #fff;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
         }
-        .animal img {
-            max-width: 100%;
-            border-radius: 10px;
-        }
-        .animal:hover {
-            background-color: #f9f9f9;
+        .button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
         }
     </style>
 </head>
 <body>
     <h1>Zvířátka a jejich zvuky</h1>
-    <div class="container">
-        <div class="animal" onclick="playSound('cat')">
-            <img src="https://via.placeholder.com/120?text=Kočka" alt="Kočka">
-            <p>Kočka</p>
-        </div>
-        <div class="animal" onclick="playSound('dog')">
-            <img src="https://via.placeholder.com/120?text=Pes" alt="Pes">
-            <p>Pes</p>
-        </div>
-        <div class="animal" onclick="playSound('cow')">
-            <img src="https://via.placeholder.com/120?text=Krava" alt="Krava">
-            <p>Krava</p>
-        </div>
+    <div class="animal-container">
+        <div id="animal" class="animal"></div>
+        <p id="animal-name"></p>
+    </div>
+    <div class="controls">
+        <button class="button" id="prev-btn">⬅️ Předchozí</button>
+        <button class="button" id="next-btn">➡️ Další</button>
     </div>
 
-    <audio id="cat" src="https://www.fesliyanstudios.com/play-mp3/659"></audio>
-    <audio id="dog" src="https://www.fesliyanstudios.com/play-mp3/657"></audio>
-    <audio id="cow" src="https://www.fesliyanstudios.com/play-mp3/664"></audio>
+    <audio id="animal-sound"></audio>
 
     <script>
-        function playSound(animal) {
-            const sound = document.getElementById(animal);
-            if (sound) {
-                sound.currentTime = 0;
-                sound.play();
-            }
+        // Data pro zvířata
+        const animals = [
+            { name: 'Kočka', image: 'https://via.placeholder.com/200?text=Kočka', sound: 'https://www.fesliyanstudios.com/play-mp3/659' },
+            { name: 'Pes', image: 'https://via.placeholder.com/200?text=Pes', sound: 'https://www.fesliyanstudios.com/play-mp3/657' },
+            { name: 'Krava', image: 'https://via.placeholder.com/200?text=Krava', sound: 'https://www.fesliyanstudios.com/play-mp3/664' },
+            // Další zvířata...
+        ];
+
+        let currentIndex = 0;
+
+        // Prvky
+        const animalDiv = document.getElementById('animal');
+        const animalName = document.getElementById('animal-name');
+        const animalSound = document.getElementById('animal-sound');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        // Zobrazit aktuální zvíře
+        function showAnimal(index) {
+            const animal = animals[index];
+            animalDiv.style.backgroundImage = `url(${animal.image})`;
+            animalName.textContent = animal.name;
+            animalSound.src = animal.sound;
+
+            // Povolit/zakázat tlačítka
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === animals.length - 1;
         }
+
+        // Přehrát zvuk
+        animalDiv.addEventListener('click', () => {
+            animalSound.currentTime = 0;
+            animalSound.play();
+        });
+
+        // Navigace
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                showAnimal(currentIndex);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentIndex < animals.length - 1) {
+                currentIndex++;
+                showAnimal(currentIndex);
+            }
+        });
+
+        // Inicializace
+        showAnimal(currentIndex);
     </script>
 </body>
 </html>
