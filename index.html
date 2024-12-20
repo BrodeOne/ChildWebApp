@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zvířátka a zvuky</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .animal {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+            width: 120px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+        .animal img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+        .animal:hover {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Zvířátka a jejich zvuky</h1>
+    <div class="container">
+        <div class="animal" onclick="playSound('cat')">
+            <img src="https://via.placeholder.com/120?text=Kočka" alt="Kočka">
+            <p>Kočka</p>
+        </div>
+        <div class="animal" onclick="playSound('dog')">
+            <img src="https://via.placeholder.com/120?text=Pes" alt="Pes">
+            <p>Pes</p>
+        </div>
+        <div class="animal" onclick="playSound('cow')">
+            <img src="https://via.placeholder.com/120?text=Krava" alt="Krava">
+            <p>Krava</p>
+        </div>
+    </div>
+
+    <audio id="cat" src="https://www.fesliyanstudios.com/play-mp3/659"></audio>
+    <audio id="dog" src="https://www.fesliyanstudios.com/play-mp3/657"></audio>
+    <audio id="cow" src="https://www.fesliyanstudios.com/play-mp3/664"></audio>
+
+    <script>
+        function playSound(animal) {
+            const sound = document.getElementById(animal);
+            if (sound) {
+                sound.currentTime = 0;
+                sound.play();
+            }
+        }
+    </script>
+</body>
+</html>
